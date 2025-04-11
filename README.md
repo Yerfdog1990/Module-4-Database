@@ -1,1 +1,2 @@
 # Module-4-Database
+“Working with databases. Hibernate” module is dedicated to the advanced study of the database in the context of the developer’s tasks. You will learn about why databases are needed and what they are, about database design, data types, ORM Hibernate (Hibernate architecture, configuration, main annotations, receiving, updating and deleting data), as well as the JDBC interface and their interaction. At the end of the module you will have the final practical project based on the material covered.
