@@ -1,0 +1,105 @@
+-- Retrieves schools with less than 40 students
+SELECT *
+FROM School
+WHERE NumberOfStudents < 40;
+
+-- Retrieves schools established before the year 2000
+SELECT *
+FROM School
+WHERE EstablishedYear < 2000;
+
+-- Retrieves schools where the number of students is less than or equal to 25
+SELECT *
+FROM School
+WHERE NumberOfStudents <= 25;
+
+-- Retrieves schools where the number of teachers is greater than or equal to 10
+SELECT *
+FROM School
+WHERE NumberOfTeachers >= 10;
+
+-- Retrieves schools where the principal's name is 'John Smith'
+SELECT *
+FROM School
+WHERE PrincipalName = 'John Smith';
+
+-- Retrieves schools established in years other than 2015
+SELECT *
+FROM School
+WHERE EstablishedYear != 2015;
+
+-- Retrieves schools that are currently active with more than 50 students
+SELECT *
+FROM School
+WHERE IsActive = 1
+  AND NumberOfStudents > 50;
+
+-- Retrieves schools where either the number of students is less than 30 or the number of teachers is less than 5
+SELECT *
+FROM School
+WHERE NumberOfStudents < 30
+   OR NumberOfTeachers < 5;
+
+-- Retrieves schools where the number of students is NOT between 20 and 40
+SELECT *
+FROM School
+WHERE NumberOfStudents NOT BETWEEN 20 AND 40;
+
+-- Retrieves schools that match specific principal names
+SELECT *
+FROM School
+WHERE PrincipalName IN ('Alice Johnson', 'Michael Brown', 'Emily Davis');
+
+-- Retrieves schools located at specific addresses
+SELECT *
+FROM School
+WHERE Address IN ('123 Main St', '456 Oak Ave', '789 Pine Rd');
+
+-- Retrieves the first 5 schools in the result
+SELECT *
+FROM School
+LIMIT 5;
+
+-- Skips the first 5 schools and retrieves the next 5 schools
+SELECT *
+FROM School
+LIMIT 5 OFFSET 5;
+
+-- Retrieves a distinct list of school principal names
+SELECT DISTINCT PrincipalName
+FROM School;
+
+-- Retrieves schools sorted by the number of students in ascending order
+SELECT *
+FROM School
+ORDER BY NumberOfStudents ASC;
+
+-- Retrieves schools sorted by the number of students in descending order
+SELECT *
+FROM School
+ORDER BY NumberOfStudents DESC;
+
+-- Retrieves schools where the address is NULL
+SELECT *
+FROM School
+WHERE Address IS NULL;
+
+-- Retrieves schools where the address is NOT NULL
+SELECT *
+FROM School
+WHERE Address IS NOT NULL;
+
+-- Retrieves schools where the name starts with 'A'
+SELECT *
+FROM School
+WHERE Name LIKE 'A%';
+
+-- Retrieves schools where the name ends with 'Academy'
+SELECT *
+FROM School
+WHERE Name LIKE '%Academy';
+
+-- Retrieves schools where the name contains 'Central'
+SELECT *
+FROM School
+WHERE Name LIKE '%Central%';

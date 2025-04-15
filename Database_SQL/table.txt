@@ -1,0 +1,82 @@
+CREATE TABLE School
+(
+    SchoolID         INTEGER PRIMARY KEY AUTOINCREMENT,                  -- Unique identifier for each school
+    Name             TEXT NOT NULL,                                      -- Name of the school
+    Address          TEXT,                                               -- Address of the school
+    EstablishedYear  INTEGER,                                            -- Year the school was established
+    PrincipalName    TEXT,                                               -- Name of the school principal
+    NumberOfStudents INTEGER CHECK (NumberOfStudents BETWEEN 0 AND 100), -- Total number of students (0-100)
+    NumberOfTeachers INTEGER,                                            -- Total number of teachers
+    IsActive         BOOLEAN DEFAULT 1                                   -- Indicates if the school is currently active
+);
+
+INSERT INTO School (Name, Address, EstablishedYear, PrincipalName, NumberOfStudents, NumberOfTeachers, IsActive)
+VALUES
+-- First 80 schools with no NULL entries
+('Greenwood Academy', '123 Oak Street', 1980, 'John Smith', 85, 10, 1),
+('Bright Future School', '456 Maple Avenue', 1995, 'Mary Johnson', 78, 12, 1),
+('Cedar High School', '789 Pine Road', 1975, 'Robert Brown', 90, 15, 1),
+('Riverside Academy', '101 River Drive', 2000, 'Patricia Taylor', 72, 8, 1),
+('Springfield School', '202 Elm Street', 1988, 'Michael Wilson', 67, 9, 1),
+('Harmony School', '303 Birch Lane', 1992, 'Lisa Davis', 83, 11, 1),
+('Mountainview High', '404 Hilltop Street', 1985, 'James Martinez', 88, 13, 1),
+('Sunset Academy', '505 Sunset Boulevard', 1999, 'Karen Anderson', 74, 10, 1),
+('Oceanview School', '606 Shoreline Road', 2003, 'Charles Thomas', 80, 14, 1),
+('Starlight School', '707 Moonrise Court', 1990, 'Emily Garcia', 92, 12, 1),
+('Evergreen High', '808 Forest Lane', 1986, 'Daniel Taylor', 66, 7, 1),
+('Silverlake Academy', '909 Clearwater Road', 1993, 'Sophia White', 77, 12, 1),
+('Sunnyvale Elementary', '1010 Sunshine Street', 2005, 'George Hall', 65, 8, 1),
+('Meadowbrook School', '2020 Pasture Avenue', 1979, 'Evelyn King', 88, 14, 1),
+('Oakridge Academy', '3030 Timberland Drive', 1998, 'Alexander Scott', 75, 10, 1),
+('Willowbrook School', '4040 Brook Street', 1991, 'Madison Lee', 79, 11, 1),
+('Clearwater High', '5050 Crystal Road', 2004, 'Chloe Adams', 83, 9, 1),
+('Hillcrest Academy', '6060 Summit Street', 1968, 'Benjamin Wright', 85, 13, 1),
+('Pinecrest High', '7070 Grove Avenue', 1994, 'Isabella Lewis', 95, 15, 1),
+('Lakeside Academy', '8080 Waterfront Lane', 2002, 'Oliver Walker', 89, 12, 1),
+('Rosewood High', '9998 Blossom Street', 1987, 'Grace Robinson', 88, 10, 1),
+('Maplewood School', '10250 Maplewood Drive', 1996, 'Liam Monroe', 82, 13, 1),
+('Northview Academy', '11211 Ridge Road', 1985, 'Noah Carter', 66, 6, 1),
+('Hillside High', '435 Hillside Avenue', 1980, 'Olivia Gonzalez', 70, 10, 1),
+('Forestview School', '789 Elmwood Lane', 1984, 'Liam Harris', 73, 9, 1),
+('Brookhaven School', '11011 Brook Lane', 1972, 'Sophia Turner', 88, 14, 1),
+('Riverside Valley High', '402 Riverside Road', 1998, 'Olivia Brown', 78, 11, 1),
+('Meadowfield Academy', '200 Main Street', 1999, 'Ella Harris', 96, 12, 1),
+('Summit Academy', '999 Summit Street', 2005, 'Jacob Scott', 48, 7, 1),
+('Midtown High', '400 Park Avenue', 1997, 'Lucas Hernandez', 91, 15, 1),
+('Stonehaven School', '250 Stone Lane', 1988, 'Mason Lopez', 82, 11, 1),
+('Bridgetown Academy', '250 Bridge Lane', 2001, 'Scarlett Ward', 100, 14, 1),
+('Oakville High', '701 Oak Street', 1990, 'Amelia Martin', 98, 8, 1),
+('Grandview High', '900 Grandview Drive', 1989, 'Emma Jackson', 86, 13, 1),
+('Hopewell Academy', '350 Hope Street', 1988, 'Liam Davis', 96, 11, 1),
+('Redwood School', '789 Redwood Avenue', 1994, 'Mia Clark', 76, 12, 1),
+('Seaview High', '460 Seaview Road', 2003, 'Sophia Wood', 54, 8, 1),
+('Woodland Academy', '502 Woodland Drive', 2002, 'Henry Green', 81, 10, 1),
+('Clearwater Valley School', '333 Clearwater Lane', 1999, 'Ella Thompson', 72, 11, 1),
+('Mountain Peak Academy', '700 Peak Drive', 2000, 'Lucy Bell', 90, 13, 1),
+('Ashwood High', '609 Ashwood Street', 1981, 'Ava Sanchez', 87, 12, 1),
+('Lakeshore Academy', '2000 Lakeshore Lane', 2003, 'Oliver Clarke', 77, 11, 1),
+-- Continue non-NULL rows until 80 total
+('Waverly School', '101 Waverly Drive', 1996, 'Emily Harris', 91, 14, 1),
+('Sunrise Academy', '202 Solar Lane', 2001, 'Benjamin Martin', 89, 12, 1),
+
+-- Remaining 20 schools with NULL entries
+('Cedar High School', NULL, 1975, 'Robert Brown', 90, 15, 1),
+('Riverside Academy', '101 River Drive', NULL, 'Patricia Taylor', 72, 8, 1),
+('Springfield School', '202 Elm Street', 1988, NULL, 67, 9, NULL),
+('Harmony School', '303 Birch Lane', 1992, 'Lisa Davis', NULL, 11, 1),
+('Mountainview High', NULL, 1985, 'James Martinez', 88, NULL, 1),
+('Sunset Academy', '505 Sunset Boulevard', NULL, 'Karen Anderson', 74, 10, NULL),
+('Oceanview School', '606 Shoreline Road', 2003, 'Charles Thomas', NULL, NULL, 1),
+('Starlight School', NULL, 1990, 'Emily Garcia', 92, 12, 1),
+('Evergreen High', '808 Forest Lane', 1986, 'Daniel Taylor', NULL, 7, 1),
+('Silverlake Academy', '909 Clearwater Road', NULL, NULL, 77, NULL, 1),
+('Sunnyvale Elementary', NULL, 2005, 'George Hall', 65, 8, NULL),
+('Meadowbrook School', NULL, NULL, 'Evelyn King', 88, 14, 1),
+('Willowbrook School', '4040 Brook Street', 1991, 'Madison Lee', NULL, 11, NULL),
+('Clearwater High', NULL, NULL, 'Chloe Adams', 83, 9, NULL),
+('Hillcrest Academy', NULL, 1968, NULL, 85, NULL, 1),
+('Pinecrest High', '7070 Grove Avenue', 1994, 'Isabella Lewis', 95, 15, NULL),
+('Redwood Academy', '909 Mountain Drive', 1989, NULL, 65, NULL, NULL),
+('Elmwood School', NULL, 2003, 'Sophia Hall', 45, 7, 1),
+('Summerville Academy', NULL, NULL, NULL, 92, NULL, 1),
+('Brookfield School', '202 River Lane', NULL, 'Mason Lewis', NULL, NULL, NULL);
