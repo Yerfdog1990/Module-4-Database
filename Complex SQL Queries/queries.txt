@@ -1,0 +1,59 @@
+
+-- 1. Basic SELECT to get all records from the Exams table
+SELECT *
+FROM Exams;
+
+-- 2. Using IF to categorize Physics
+SELECT Maths,
+       if(Physics >= 70, 'Pass', 'Fail') AS comments
+FROM Exams;
+
+-- 3. Using a CASE statement to grade Exams
+SELECT Maths,
+       Physics,
+       CASE
+           WHEN Physics >= 90 THEN 'A'
+           WHEN Physics >= 80 THEN 'B'
+           WHEN Physics >= 70 THEN 'C'
+           WHEN Physics >= 60 THEN 'D'
+           ELSE 'F'
+           END AS grade
+FROM Exams;
+
+-- 4. Group Exams by Physics range
+SELECT CASE
+           WHEN Physics >= 90 THEN '90-100'
+           WHEN Physics >= 80 THEN '80-89'
+           WHEN Physics >= 70 THEN '70-79'
+           WHEN Physics >= 60 THEN '60-69'
+           ELSE 'Below 60'
+           END  AS Physics_range,
+       COUNT(*) AS number_of_Examss
+FROM Exams
+GROUP BY Physics_range;
+
+-- 5. Using aggregate functions to analyze Physics exams
+SELECT COUNT(*)   as total_Examss,
+       AVG(Physics) as average_Physics,
+       MIN(Physics) as lowest_Physics,
+       MAX(Physics) as highest_Physics
+FROM Exams;
+
+-- 6. Find Exams with Physics above average
+SELECT Physics, Maths
+FROM Exams
+WHERE Physics > (SELECT AVG(Physics) FROM Exams)
+ORDER BY Physics DESC;
+
+-- 7. Using IFNULL to handle potential NULL values
+SELECT Physics,
+       IFNULL(Physics, 0) as adjusted_Physics
+FROM Exams;
+
+-- 8. Group by Name with HAVING clause
+SELECT Name,
+       COUNT(*)   as attempts,
+       AVG(Physics) as average_Physics
+FROM Exams
+GROUP BY Name
+HAVING COUNT(*) > 1;
