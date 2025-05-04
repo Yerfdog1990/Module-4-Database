@@ -30,7 +30,7 @@ public class JDBCUtils {
 
   // Main method
   public static void main(String[] args) throws SQLException {
-    doWithStatement(
+    MyConsumer<Statement> consumerStatement =
         statement -> {
           statement.executeUpdate(
               "CREATE TABLE IF NOT EXISTS students (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), gender ENUM('Male', 'Female', 'Other'), gpa DECIMAL, birthday DATE)");
@@ -44,8 +44,6 @@ public class JDBCUtils {
               "INSERT INTO students (name, gender, gpa, birthday) VALUES ('Mike', 'Male', 2.5, '1996-06-06')");
           statement.executeUpdate(
               "INSERT INTO students (name, gender, gpa, birthday) VALUES ('Anna', 'Female', 3.6, '1995-05-05')");
-          statement.executeUpdate(
-              "INSERT INTO students (name, gender, gpa, birthday) VALUES ('Bob', 'Other', 1.4, '1994-04-04')");
 
           ResultSet resultSet = statement.executeQuery("SELECT * FROM students");
           while (resultSet.next()) {
@@ -55,6 +53,7 @@ public class JDBCUtils {
             String birthday = resultSet.getString("birthday");
             System.out.println(name + ", " + gender + ", " + gpa + ", " + birthday);
           }
-        });
+        };
+    doWithStatement(consumerStatement);
   }
 }
