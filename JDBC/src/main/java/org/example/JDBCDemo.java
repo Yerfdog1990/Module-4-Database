@@ -10,7 +10,6 @@ public class JDBCDemo {
 
     try (Connection connection = DriverManager.getConnection(url, username, password)) {
       try (Statement statement = connection.createStatement()) {
-
         statement.executeUpdate(
             "CREATE TABLE IF NOT EXISTS students (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), gender ENUM('Male', 'Female', 'Other'), gpa DECIMAL, birthday DATE)");
         statement.executeUpdate(
