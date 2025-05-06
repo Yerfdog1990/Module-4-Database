@@ -1,4 +1,4 @@
-package org.example;
+package jdbc.transactions;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -41,7 +41,7 @@ public class RegularTransactionExample {
             throw new SQLException(e);
           }
         };
-    JDBCUtil.runWithConnection(consumer);
+    JDBCUtil.standAloneRunWithTransaction(consumer);
   }
 
   private static void simulateDBError() throws SQLException {

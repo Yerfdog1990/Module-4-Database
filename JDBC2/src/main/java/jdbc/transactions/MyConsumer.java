@@ -1,4 +1,4 @@
-package org.example;
+package jdbc.transactions;
 
 import java.sql.Connection;
 import java.sql.SQLException;

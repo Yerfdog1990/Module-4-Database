@@ -1,4 +1,4 @@
-package org.example;
+package jdbc.transactions;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,14 +20,15 @@ public class JDBCUtil {
     return DriverManager.getConnection(connectionUrl, username, password);
   }
 
-  public void runWithTransactionInNewConnection(MyConsumer consumer) throws SQLException {
-    runWithTransaction(null, consumer);
+  // Method to create a connection
+  public static void standAloneRun(MyConsumer consumer) throws SQLException {
+    try (Connection connection = getConnection()) {
+      consumer.accept(connection);
+    }
   }
 
-  // Method to create a connection
-  public static void runWithConnection(MyConsumer consumer) throws SQLException {
-    Connection connection = getConnection();
-    consumer.accept(connection);
+  public static void standAloneRunWithTransaction(MyConsumer consumer) throws SQLException {
+    runWithTransaction(null, consumer);
   }
 
   // Method to create a transaction
