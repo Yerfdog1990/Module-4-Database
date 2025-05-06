@@ -3,10 +3,7 @@ package jdbc.transactions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,6 +67,43 @@ public class RegularTransactionTest {
     double getBalanceAccount2 = findBalance(2);
     assertEquals(500, getBalanceAccount1);
     assertEquals(200, getBalanceAccount2);
+    printBalances();
+  }
+
+  @Test
+  void learningCallableStatement() throws SQLException {
+    String createProcedureSQL =
+        "CREATE ALIAS IF NOT EXISTS getBalance FOR \"jdbc.transactions.H2CallableStatementExample.getBalanceForAccount\"";
+    JDBCUtil.standAloneRunWithTransaction(
+        connection -> {
+          // Create the procedure within the transaction
+          connection.createStatement().execute(createProcedureSQL);
+
+          // Call the stored procedure within the same transaction
+          CallableStatement callableStmt = connection.prepareCall("{CALL getBalance(?)}");
+          callableStmt.setInt(1, 1);
+          ResultSet resultSet = callableStmt.executeQuery();
+
+          resultSet.next();
+          double accountBalance = resultSet.getDouble(1);
+          assertEquals(500, accountBalance);
+
+          // Update balance within the same transaction
+          connection
+              .createStatement()
+              .execute("UPDATE ACCOUNT SET BALANCE = BALANCE - 100 WHERE ID = 1");
+          connection
+              .createStatement()
+              .execute("UPDATE ACCOUNT SET BALANCE = BALANCE + 100 WHERE ID = 2");
+
+          // Verify the updated balance in the transaction
+          callableStmt.setInt(1, 1);
+          resultSet = callableStmt.executeQuery();
+          resultSet.next();
+          double newBalance = resultSet.getDouble(1);
+          assertEquals(400, newBalance);
+        });
+    System.out.println("\nFinal balances:");
     printBalances();
   }
 

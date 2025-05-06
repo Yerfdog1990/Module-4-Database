@@ -46,7 +46,7 @@ public class JDBCUtil {
     } catch (SQLException e) {
       if (connection != null) {
         connection.rollback();
-        System.out.println("Transaction rolled back");
+        System.out.println("\nTransaction rolled back");
         connection.close();
       }
       throw new SQLException(e);
