@@ -1,10 +1,12 @@
 package jdbc.transactions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,6 +50,31 @@ public class RegularTransactionTest {
     double getBalanceAccount2 = findBalance(2);
     assertEquals(400, getBalanceAccount1);
     assertEquals(300, getBalanceAccount2);
+  }
+
+  @Test
+  void learningRollback() throws SQLException {
+    SQLException exception =
+        assertThrows(
+            SQLException.class,
+            () ->
+                JDBCUtil.standAloneRunWithTransaction(
+                    connection -> {
+                      Statement statement = connection.createStatement();
+                      statement.execute("UPDATE ACCOUNT SET BALANCE = BALANCE - 100 WHERE ID = 1");
+                      simulateDBError();
+                      statement.execute("UPDATE ACCOUNT SET BALANCE = BALANCE + 100 WHERE ID = 2");
+                      System.out.println("Transaction successful");
+                    }));
+    double getBalanceAccount1 = findBalance(1);
+    double getBalanceAccount2 = findBalance(2);
+    assertEquals(500, getBalanceAccount1);
+    assertEquals(200, getBalanceAccount2);
+    printBalances();
+  }
+
+  private static void simulateDBError() throws SQLException {
+    throw new SQLException("Transaction failed");
   }
 
   private static double findBalance(int accountId) throws SQLException {
