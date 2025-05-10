@@ -13,10 +13,10 @@ public class UserService {
     // Drop the table if it exists and recreate it
     statement.execute("DROP TABLE IF EXISTS TEST");
     statement.execute(
-        "CREATE TABLE IF NOT EXISTS TEST(ID INT PRIMARY KEY, USERS VARCHAR(255) UNIQUE NOT NULL, PASSWORD VARCHAR(255))");
+        "CREATE TABLE IF NOT EXISTS TEST(ID INT PRIMARY KEY, USERS VARCHAR(255) UNIQUE NOT NULL, PASSWORD VARCHAR(255), is_Active BIT)");
     // Insert two users
-    statement.execute("INSERT INTO TEST VALUES(1, 'user1', 'password1')");
-    statement.execute("INSERT INTO TEST VALUES(2, 'user2', 'password2')");
+    statement.execute("INSERT INTO TEST VALUES(1, 'user1', 'password1', 1)");
+    statement.execute("INSERT INTO TEST VALUES(2, 'user2', 'password2', 0)");
   }
 
   public boolean authenticate(String userName, String password) throws SQLException {
