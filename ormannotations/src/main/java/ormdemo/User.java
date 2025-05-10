@@ -1,6 +1,7 @@
 package ormdemo;
 
 import lombok.Data;
+// POJO -> Plain Old Java Object
 
 @Data
 public class User {
