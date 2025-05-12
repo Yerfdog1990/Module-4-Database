@@ -1,4 +1,4 @@
-package hql.hql.repository;
+package hql.repository;
 
 import java.util.function.Function;
 import org.hibernate.Session;

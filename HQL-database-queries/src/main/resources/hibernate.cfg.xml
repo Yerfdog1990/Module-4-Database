@@ -29,7 +29,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mapping files -->
-        <mapping class="hibernate.model.UserHibernate"/>
+        <mapping class="hql.model.UserHQL"/>
 
     </session-factory>
 </hibernate-configuration>

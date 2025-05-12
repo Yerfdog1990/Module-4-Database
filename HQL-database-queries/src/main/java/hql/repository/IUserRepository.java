@@ -1,13 +1,13 @@
-package hql.hql.repository;
+package hql.repository;
 
-import hibernate.model.UserHibernate;
+import hibernate.model.UserHQL;
 
 public interface IUserRepository {
-  void save(UserHibernate user);
+  void save(UserHQL user);
 
-  UserHibernate findById(int id);
+  UserHQL findById(int id);
 
-  void update(UserHibernate user);
+  void update(UserHQL user);
 
-  void delete(UserHibernate user);
+  void delete(UserHQL user);
 }

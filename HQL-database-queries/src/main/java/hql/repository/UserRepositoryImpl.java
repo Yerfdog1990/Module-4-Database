@@ -1,10 +1,10 @@
-package hql.hql.repository;
+package hql.repository;
 
-import hibernate.model.UserHibernate;
+import hibernate.model.UserHQL;
 
 public class UserRepositoryImpl implements IUserRepository {
   @Override
-  public void save(UserHibernate user) {
+  public void save(UserHQL user) {
     HQLUtil.doWithSession(
         session -> {
           session.persist(user);
@@ -13,12 +13,12 @@ public class UserRepositoryImpl implements IUserRepository {
   }
 
   @Override
-  public UserHibernate findById(int id) {
-    return HQLUtil.doWithSession(session -> session.get(UserHibernate.class, id));
+  public UserHQL findById(int id) {
+    return HQLUtil.doWithSession(session -> session.get(UserHQL.class, id));
   }
 
   @Override
-  public void update(UserHibernate user) {
+  public void update(UserHQL user) {
     HQLUtil.doWithSession(
         session -> {
           session.merge(user);
@@ -27,7 +27,7 @@ public class UserRepositoryImpl implements IUserRepository {
   }
 
   @Override
-  public void delete(UserHibernate user) {
+  public void delete(UserHQL user) {
     HQLUtil.doWithSession(
         session -> {
           session.remove(user);

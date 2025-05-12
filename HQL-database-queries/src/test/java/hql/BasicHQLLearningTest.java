@@ -1,4 +1,3 @@
 package hql;
 
-public class BasicHQLLearningTest {
-}
+public class BasicHQLLearningTest {}

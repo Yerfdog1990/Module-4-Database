@@ -17,7 +17,9 @@ public class UserServiceImpl implements IUserService {
     try {
       User user = userRepository.getUser(username);
       if (user == null) return false;
-      return password.equals(passwordEncoder.encode(user.getPassword())) && user.isActive();
+      // Encode the input password and compare with the stored password
+      String encodedPassword = passwordEncoder.encode(password);
+      return encodedPassword.equals(user.getPassword()) && user.isActive();
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
