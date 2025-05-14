@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.query.Query;
 
 /**
  * Manages animal entities in the database using Hibernate. Provides functionality for CRUD
@@ -29,8 +28,9 @@ public class AnimalManager {
     properties.put(Environment.PASS, "");
     properties.put(Environment.DIALECT, "org.hibernate.dialect.H2Dialect");
     properties.put(Environment.SHOW_SQL, "true");
+    properties.put(Environment.FORMAT_SQL, "true");
     properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-    properties.put(Environment.HBM2DDL_AUTO, "create-drop");
+    properties.put(Environment.HBM2DDL_AUTO, "update");
     sessionFactory =
         new Configuration()
             .setProperties(properties)
@@ -38,11 +38,11 @@ public class AnimalManager {
             .buildSessionFactory();
   }
 
-  // Add animals to the database
   /**
    * Adds predefined animal records to the database. Creates three animals (Dog, Cat, Lion) with
    * their respective details.
    */
+  // Insert objects to the database (DML operation)
   public void addAnimals() {
     Animal animal1 = new Animal(1, "Dog", "Canidae", "puppy");
     Animal animal2 = new Animal(2, "Cat", "Felidae", "kitty");
@@ -64,10 +64,10 @@ public class AnimalManager {
    *
    * @return List of all Animal objects stored in the database
    */
+  // Retrieve all animals from the database (DDL operation)
   public List<Animal> getAnimals() {
     try (Session session = sessionFactory.openSession()) {
-      Query<Animal> query = session.createQuery("from Animal", Animal.class);
-      return query.list();
+      return session.createQuery("from Animal", Animal.class).list();
     }
   }
 
@@ -76,6 +76,7 @@ public class AnimalManager {
    *
    * @param animal The Animal object to be removed
    */
+  // Remove animals from the database (DML operation)
   public void removeUser(Animal animal) {
     try (Session session = sessionFactory.openSession()) {
       Transaction transaction = session.beginTransaction();
