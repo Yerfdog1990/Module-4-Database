@@ -32,11 +32,11 @@ public class HibernateUtil {
   }
 
   // Begin transaction
-  public static <T> T doWIthSession(Function<Session, T> callback) {
+  public static <T> T doWIthSession(Function<Session, T> rollback) {
     Session session = getSession();
     Transaction transaction = session.beginTransaction();
     try {
-      T result = callback.apply(session);
+      T result = rollback.apply(session);
       transaction.commit();
       return result;
     } catch (RuntimeException e) {
