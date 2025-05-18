@@ -3,7 +3,6 @@ import org.example.model.Employee;
 import org.example.model.Task;
 import org.example.repository.HibernateUtil;
 import org.hibernate.Session;
-import org.assertj.core.api.Assertions;
 import org.hibernate.query.Query;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
