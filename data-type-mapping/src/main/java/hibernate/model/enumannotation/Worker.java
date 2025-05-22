@@ -19,11 +19,16 @@ public class Worker {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "worker_type_string")
-  private WorkerType workerType;
+  private WorkerType workerTypeString;
+
+  @Enumerated(EnumType.ORDINAL)
+  @Column(name = "worker_type_integer")
+  private WorkerType workerTypeInteger;
 
   // No args constructor
-  public Worker(String name, WorkerType workerType) {
+  public Worker(String name, WorkerType workerTypeString, WorkerType workerTypeInteger) {
     this.name = name;
-    this.workerType = workerType;
+    this.workerTypeString = workerTypeString;
+    this.workerTypeInteger = workerTypeInteger;
   }
 }
