@@ -32,5 +32,6 @@
         <!-- Names the annotated entity class -->
         <mapping class="hibernate.model.typeannotation.Employee"/>
         <mapping class="hibernate.model.enumannotation.Worker"/>
+        <mapping class="hibernate.model.formulaanotation.BMICalculator"/>
     </session-factory>
 </hibernate-configuration>
