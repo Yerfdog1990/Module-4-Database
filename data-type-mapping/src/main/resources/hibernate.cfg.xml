@@ -33,5 +33,8 @@
         <mapping class="hibernate.model.typeannotation.Employee"/>
         <mapping class="hibernate.model.enumannotation.Worker"/>
         <mapping class="hibernate.model.formulaanotation.BMICalculator"/>
+        <mapping class="hibernate.model.embeddedannotation.Address"/>
+        <mapping class="hibernate.model.embeddedannotation.Citizenship"/>
+        <mapping class="hibernate.model.temporalannotation.Event"/>
     </session-factory>
 </hibernate-configuration>
