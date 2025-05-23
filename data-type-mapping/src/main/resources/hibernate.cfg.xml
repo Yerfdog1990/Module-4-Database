@@ -36,5 +36,6 @@
         <mapping class="hibernate.model.embeddedannotation.Address"/>
         <mapping class="hibernate.model.embeddedannotation.Citizenship"/>
         <mapping class="hibernate.model.temporalannotation.Event"/>
+        <mapping class="hibernate.model.temporalannotation.Meeting"/>
     </session-factory>
 </hibernate-configuration>
