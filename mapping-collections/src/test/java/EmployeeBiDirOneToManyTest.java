@@ -13,8 +13,8 @@ public class EmployeeBiDirOneToManyTest {
     private EmployeeBiDirOneToMany employee;
     @BeforeEach
     void setUp() {
-       department = new DepartmentBiDirOneToMany("IT");
-       employee = new EmployeeBiDirOneToMany("John", department);
+        department = new DepartmentBiDirOneToMany("IT");
+        employee = new EmployeeBiDirOneToMany("John", department);
         doWithSession(session -> {
             session.persist(department);
             session.persist(employee);
@@ -32,21 +32,22 @@ public class EmployeeBiDirOneToManyTest {
     @Test
     void testBiDirectionalOneToManyMapping() {
         doWithSession(session ->{
-        DepartmentBiDirOneToMany retrievedDepartment =  session.get(DepartmentBiDirOneToMany.class, department.getId());
-        assertNotNull(retrievedDepartment);
-        assertNotNull(retrievedDepartment.getEmployees());
-        assertEquals("IT", retrievedDepartment.getName());
-        assertEquals(1, retrievedDepartment.getId());
+            // Verify department
+            DepartmentBiDirOneToMany retrievedDepartment =  session.get(DepartmentBiDirOneToMany.class, department.getId());
+            assertNotNull(retrievedDepartment);
+            assertNotNull(retrievedDepartment.getEmployees());
+            assertEquals("IT", retrievedDepartment.getName());
+            assertEquals(1, retrievedDepartment.getId());
 
-
-        EmployeeBiDirOneToMany retrievedEmployee = session.get(EmployeeBiDirOneToMany.class, employee.getId());
-        assertNotNull(retrievedEmployee);
-        assertNotNull(retrievedEmployee.getDepartment());
-        assertEquals("John", retrievedEmployee.getName());
-        assertEquals(1, retrievedEmployee.getId());
-        assertEquals("IT", retrievedEmployee.getDepartment().getName());
-        assertEquals(1, retrievedEmployee.getDepartment().getId());
-        return null;
+            // Verify employee
+            EmployeeBiDirOneToMany retrievedEmployee = session.get(EmployeeBiDirOneToMany.class, employee.getId());
+            assertNotNull(retrievedEmployee);
+            assertNotNull(retrievedEmployee.getDepartment());
+            assertEquals("John", retrievedEmployee.getName());
+            assertEquals(1, retrievedEmployee.getId());
+            assertEquals("IT", retrievedEmployee.getDepartment().getName());
+            assertEquals(1, retrievedEmployee.getDepartment().getId());
+            return null;
         });
     }
 }
