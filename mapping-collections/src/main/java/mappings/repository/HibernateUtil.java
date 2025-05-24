@@ -1,5 +1,7 @@
 package mappings.repository;
 
+import mappings.model.onetoone.ExclusiveEmployeeUni;
+import mappings.model.onetoone.ExclusiveTaskUni;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -18,7 +20,9 @@ public class HibernateUtil {
             mappings.model.formulaanotation.BMICalculator.class,
             mappings.model.embeddedannotation.Citizenship.class,
             mappings.model.typeannotation.Employee.class,
-            mappings.model.collections.Users.class
+            mappings.model.collections.Users.class,
+            ExclusiveEmployeeUni.class,
+            ExclusiveTaskUni.class,
     };
   }
   private static Configuration getConfiguration() {
@@ -26,7 +30,7 @@ public class HibernateUtil {
     // Database connection settings
     configuration.setProperty("hibernate.connection.driver_class", "org.h2.Driver");
     configuration.setProperty("hibernate.connection.url", "jdbc:h2:mem:testdb");
-    configuration.setProperty("hibernate.connection.username", ">sa");
+    configuration.setProperty("hibernate.connection.username", "sa");
     configuration.setProperty("hibernate.connection.password", "");
 
     // H2 Dialect

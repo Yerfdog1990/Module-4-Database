@@ -31,7 +31,6 @@ public class Users {
     @Column(name = "set_list")
     private Set<String> messageSet = new HashSet<>();
     // Constructor
-
     public Users(List<String> messagesList, Map<String, String> messageMap, Set<String> messageSet) {
         this.messagesList = messagesList;
         this.messageMap = messageMap;
