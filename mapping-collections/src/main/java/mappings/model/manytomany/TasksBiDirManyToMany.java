@@ -3,7 +3,6 @@ package mappings.model.manytomany;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mappings.model.onetomany.EmployeeBiDir;
 
 import java.util.List;
 
@@ -11,12 +10,18 @@ import java.util.List;
 @Table(name = "task")
 @Data
 @NoArgsConstructor
-public class Tasks {
+public class TasksBiDirManyToMany {
     @Id
     @GeneratedValue(generator = "task_id_seq")
     private int id;
     @Column(name = "description", unique = true)
     private String description;
     @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
-    private List<EmployeeBiDir> employees;
+    private List<EmployeeBiDirManyToMany> employees;
+
+    // Constructor
+    public TasksBiDirManyToMany(String description, List<EmployeeBiDirManyToMany> employees) {
+        this.description = description;
+        this.employees = employees != null ? employees : List.of();
+    }
 }

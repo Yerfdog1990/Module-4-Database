@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString(exclude = {"department", "tasks"})
-public class Employee {
+public class EmployeeBiDirManyToMany {
     @Id
     @GeneratedValue(generator = "employee_id_seq")
     private int id;
@@ -25,23 +23,14 @@ public class Employee {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "salary")
-    private BigDecimal salary;
-
-    @Column(name = "hiring_data")
-    @Temporal(TemporalType.DATE)
-    private Date hiringDate;
-
     @ManyToMany
     @JoinTable(name = "employee_task",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
-    private List<Tasks> tasks = new ArrayList<>();
+    private List<TasksBiDirManyToMany> tasks = new ArrayList<>();
 
-    public Employee(String name, BigDecimal salary, Date hiringDate, List<Tasks> tasks) {
+    public EmployeeBiDirManyToMany(String name, List<TasksBiDirManyToMany> tasks) {
         this.name = name;
-        this.salary = salary;
-        this.hiringDate = hiringDate;
         this.tasks = tasks != null ? tasks : new ArrayList<>();
     }
 }

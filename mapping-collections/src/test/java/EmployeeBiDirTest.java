@@ -1,4 +1,3 @@
-import jakarta.transaction.Transactional;
 import mappings.model.onetomany.DepartmentBiDir;
 import mappings.model.onetomany.EmployeeBiDir;
 import org.junit.jupiter.api.AfterEach;

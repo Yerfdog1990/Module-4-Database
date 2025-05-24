@@ -1,5 +1,7 @@
 package mappings.repository;
 
+import mappings.model.manytomany.EmployeeBiDirManyToMany;
+import mappings.model.manytomany.TasksBiDirManyToMany;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -22,7 +24,9 @@ public class HibernateUtil {
             mappings.model.onetoone.ExclusiveEmployeeUni.class,
             mappings.model.onetoone.ExclusiveTaskUni.class,
             mappings.model.onetomany.EmployeeBiDir.class,
-            mappings.model.onetomany.DepartmentBiDir.class
+            mappings.model.onetomany.DepartmentBiDir.class,
+            EmployeeBiDirManyToMany.class,
+            TasksBiDirManyToMany.class,
     };
   }
   private static Configuration getConfiguration() {
