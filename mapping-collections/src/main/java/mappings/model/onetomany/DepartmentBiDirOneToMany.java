@@ -10,16 +10,16 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class DepartmentBiDir {
+public class DepartmentBiDirOneToMany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(unique = false)
     private String name;
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<EmployeeBiDir> employees = new ArrayList<>();
+    List<EmployeeBiDirOneToMany> employees = new ArrayList<>();
 
-    public DepartmentBiDir(String name) {
+    public DepartmentBiDirOneToMany(String name) {
         this.name = name;
     }
 }

@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 @Entity
 @Table(name = "employee")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString(exclude = {"department", "tasks"})
-public class EmployeeBiDir {
+public class EmployeeBiDirOneToMany {
     @Id
     @GeneratedValue(generator = "employee_id_seq")
     private int id;
@@ -25,9 +22,9 @@ public class EmployeeBiDir {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
-    private DepartmentBiDir department;
+    private DepartmentBiDirOneToMany department;
 
-    public EmployeeBiDir(String name, DepartmentBiDir department) {
+    public EmployeeBiDirOneToMany(String name, DepartmentBiDirOneToMany department) {
         this.name = name;
         this.department = department;
     }

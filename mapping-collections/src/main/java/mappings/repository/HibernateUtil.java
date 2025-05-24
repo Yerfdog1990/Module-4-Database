@@ -2,6 +2,8 @@ package mappings.repository;
 
 import mappings.model.manytomany.EmployeeBiDirManyToMany;
 import mappings.model.manytomany.TasksBiDirManyToMany;
+import mappings.model.onetomany.DepartmentBiDirOneToMany;
+import mappings.model.onetomany.EmployeeBiDirOneToMany;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -23,8 +25,8 @@ public class HibernateUtil {
             mappings.model.collections.Users.class,
             mappings.model.onetoone.ExclusiveEmployeeUni.class,
             mappings.model.onetoone.ExclusiveTaskUni.class,
-            mappings.model.onetomany.EmployeeBiDir.class,
-            mappings.model.onetomany.DepartmentBiDir.class,
+            EmployeeBiDirOneToMany.class,
+            DepartmentBiDirOneToMany.class,
             EmployeeBiDirManyToMany.class,
             TasksBiDirManyToMany.class,
     };
