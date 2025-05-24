@@ -16,7 +16,7 @@ public class ExclusiveEmployeeUni {
     @Column(name = "name")
     private String name;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     private ExclusiveTaskUni task;
     // Constructor

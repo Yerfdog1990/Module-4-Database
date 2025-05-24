@@ -1,7 +1,5 @@
 package mappings.repository;
 
-import mappings.model.onetoone.ExclusiveEmployeeUni;
-import mappings.model.onetoone.ExclusiveTaskUni;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -21,8 +19,10 @@ public class HibernateUtil {
             mappings.model.embeddedannotation.Citizenship.class,
             mappings.model.typeannotation.Employee.class,
             mappings.model.collections.Users.class,
-            ExclusiveEmployeeUni.class,
-            ExclusiveTaskUni.class,
+            mappings.model.onetoone.ExclusiveEmployeeUni.class,
+            mappings.model.onetoone.ExclusiveTaskUni.class,
+            mappings.model.onetomany.EmployeeBiDir.class,
+            mappings.model.onetomany.DepartmentBiDir.class
     };
   }
   private static Configuration getConfiguration() {
