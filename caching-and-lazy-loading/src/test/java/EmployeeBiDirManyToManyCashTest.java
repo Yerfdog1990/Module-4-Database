@@ -7,7 +7,7 @@ import static repository.HibernateUtil.doWithSession;
 
 public class EmployeeBiDirManyToManyCashTest {
     @Test
-    void lazyInitializationProblem() {
+    void testLazyInitializationProblem() {
         // Create tasks
         TasksBiDirManyToMany task1 = new TasksBiDirManyToMany("Task 1");
         TasksBiDirManyToMany task2 = new TasksBiDirManyToMany("Task 2");

@@ -2,6 +2,8 @@ package repository;
 
 import model.lazyinitializationproblem.EmployeeBiDirManyToMany;
 import model.lazyinitializationproblem.TasksBiDirManyToMany;
+import model.Nplus1problem.Author;
+import model.Nplus1problem.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
