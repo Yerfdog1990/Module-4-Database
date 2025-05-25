@@ -13,79 +13,66 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EmployeeBiDirManyToManyTest {
     private List<EmployeeBiDirManyToMany> employee;
     private List<TasksBiDirManyToMany> tasks;
-    
+
     @BeforeEach
     void setUp() {
         // Create tasks
-        TasksBiDirManyToMany task1 = new TasksBiDirManyToMany("Task 1", employee);
-        TasksBiDirManyToMany task2 = new TasksBiDirManyToMany("Task 2", employee);
-        TasksBiDirManyToMany task3 = new TasksBiDirManyToMany("Task 3", employee);
-        tasks = List.of(task1, task2, task3);
-        
+        TasksBiDirManyToMany task1 = new TasksBiDirManyToMany("Task 1");
+        TasksBiDirManyToMany task2 = new TasksBiDirManyToMany("Task 2");
+
         // Create employees
+        EmployeeBiDirManyToMany emp1 = new EmployeeBiDirManyToMany("Employee 1", null);
+        EmployeeBiDirManyToMany emp2 = new EmployeeBiDirManyToMany("Employee 2", null);
+
+        emp1.addTask(task1);
+        emp1.addTask(task2);
+        emp2.addTask(task2);
+
         doWithSession(session -> {
             session.persist(task1);
             session.persist(task2);
-            session.persist(task3);
-            return null;
-        });
-
-        EmployeeBiDirManyToMany employee1 = new EmployeeBiDirManyToMany("John", tasks);
-        EmployeeBiDirManyToMany employee2 = new EmployeeBiDirManyToMany("Jane", tasks);
-        EmployeeBiDirManyToMany employee3 = new EmployeeBiDirManyToMany("Jill", tasks);
-        employee = List.of(employee1, employee2, employee3);
-        doWithSession(session -> {
-            session.persist(employee1);
-            session.persist(employee2);
-            session.persist(employee3);
+            session.persist(emp1);
+            session.persist(emp2);
             return null;
         });
     }
-    
+
     @AfterEach
     void tearDown() {
         doWithSession(session -> {
-            session.createQuery("DELETE FROM EmployeeBiDirManyToMany").executeUpdate();
-            session.createQuery("DELETE FROM TasksBiDirManyToMany").executeUpdate();
+            session.createQuery("delete from EmployeeBiDirManyToMany").executeUpdate();
+            session.createQuery("delete from TasksBiDirManyToMany").executeUpdate();
             return null;
         });
     }
     @Test
     void testBiDirectionalOneToManyMapping() {
+        // Verify employees
         doWithSession(session -> {
-            // Verify employees
-            for (EmployeeBiDirManyToMany emp : employee) {
-                EmployeeBiDirManyToMany retrievedEmployee = session.get(EmployeeBiDirManyToMany.class, emp.getId());
-                assertNotNull(retrievedEmployee);
-                assertEquals(emp.getName(), retrievedEmployee.getName());
-                assertEquals(3, retrievedEmployee.getTasks().size());
-                assertEquals("Task 1", retrievedEmployee.getTasks().get(0).getDescription());
-                assertEquals("Task 2", retrievedEmployee.getTasks().get(1).getDescription());
-                assertEquals("Task 3", retrievedEmployee.getTasks().get(2).getDescription());
-            }
+            List<EmployeeBiDirManyToMany> employees = session.createQuery("from EmployeeBiDirManyToMany", EmployeeBiDirManyToMany.class).list();
+            assertEquals(2, employees.size());
 
             // Verify tasks
-            for (TasksBiDirManyToMany task : tasks) {
-                TasksBiDirManyToMany retrievedTask = session.get(TasksBiDirManyToMany.class, task.getId());
-                assertNotNull(retrievedTask);
-                assertEquals(task.getDescription(), retrievedTask.getDescription());
-                assertEquals(3, retrievedTask.getEmployees().size());
-                assertEquals("John", retrievedTask.getEmployees().get(0).getName());
-                assertEquals("Jane", retrievedTask.getEmployees().get(1).getName());
-                assertEquals("Jill", retrievedTask.getEmployees().get(2).getName());
-            }
+            List<TasksBiDirManyToMany> tasks = session.createQuery("from TasksBiDirManyToMany", TasksBiDirManyToMany.class).list();
+            assertEquals(2, tasks.size());
 
             // Verify relationships
-            EmployeeBiDirManyToMany firstEmployee = session.get(EmployeeBiDirManyToMany.class, employee.get(0).getId());
-            List<TasksBiDirManyToMany> employeeTasks = firstEmployee.getTasks();
-            assertEquals(3, employeeTasks.size());
-            assertEquals("Task 1", employeeTasks.get(0).getDescription());
-            assertEquals("Task 2", employeeTasks.get(1).getDescription());
-            assertEquals("Task 3", employeeTasks.get(2).getDescription());
-            assertEquals("John", employeeTasks.get(0).getEmployees().get(0).getName());
-            assertEquals("Jane", employeeTasks.get(1).getEmployees().get(1).getName());
-            assertEquals("Jill", employeeTasks.get(2).getEmployees().get(2).getName());
+            EmployeeBiDirManyToMany emp1 = employees.get(0);
+            assertEquals(2, emp1.getTasks().size());
+            assertEquals("Employee 1", emp1.getName());
 
+            EmployeeBiDirManyToMany emp2 = employees.get(1);
+            assertEquals(1, emp2.getTasks().size());
+            assertEquals("Employee 2", emp2.getName());
+
+            TasksBiDirManyToMany task2 = tasks.get(1);
+            assertEquals(2, task2.getEmployees().size());
+            assertNotNull(task2.getEmployees().get(0));
+            assertNotNull(task2.getEmployees().get(1));
+            assertEquals(emp1, task2.getEmployees().get(0));
+            assertEquals(emp2, task2.getEmployees().get(1));
+            assertEquals("Employee 1", task2.getEmployees().get(0).getName());
+            assertEquals("Employee 2", task2.getEmployees().get(1).getName());
             return null;
         });
     }

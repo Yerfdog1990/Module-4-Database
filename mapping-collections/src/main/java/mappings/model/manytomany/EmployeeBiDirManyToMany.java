@@ -23,14 +23,21 @@ public class EmployeeBiDirManyToMany {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "employee_task",
             joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
+            inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"))
     private List<TasksBiDirManyToMany> tasks = new ArrayList<>();
+
+    public void addTask(TasksBiDirManyToMany task) {
+        tasks.add(task);
+        task.getEmployees().add(this);
+    }
 
     public EmployeeBiDirManyToMany(String name, List<TasksBiDirManyToMany> tasks) {
         this.name = name;
-        this.tasks = tasks != null ? tasks : new ArrayList<>();
+        this.tasks = new ArrayList<>();
+        if (tasks != null)
+            tasks.forEach(this::addTask);
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,13 +16,12 @@ public class TasksBiDirManyToMany {
     @GeneratedValue(generator = "task_id_seq")
     private int id;
     @Column(name = "description", unique = true)
-    private String description;
-    @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
-    private List<EmployeeBiDirManyToMany> employees;
+    private String name;
+    @ManyToMany(mappedBy = "tasks")
+    private List<EmployeeBiDirManyToMany> employees = new ArrayList<>();
 
     // Constructor
-    public TasksBiDirManyToMany(String description, List<EmployeeBiDirManyToMany> employees) {
-        this.description = description;
-        this.employees = employees != null ? employees : List.of();
+    public TasksBiDirManyToMany(String name) {
+        this.name = name;
     }
 }
