@@ -17,21 +17,18 @@ public class Book {
     private int id;
 
     @Column(name = "name", unique = true)
-    private String name;
+    private String title;
 
-    @OneToMany(mappedBy = "book")
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
     private List<Author> authors = new ArrayList<>();
 
     // Constructor
-    public Book(String name) {
-        this.name = name;
-        this.authors = new ArrayList<>();
-        if (authors != null)
-            authors.forEach(this::addAuthor);
+    public Book(String title) {
+        this.title = title;
     }
     // Add author
     public void addAuthor(Author author) {
         authors.add(author);
-        author.setBook(this);
+        author.getBooks().add(this);
     }
 }

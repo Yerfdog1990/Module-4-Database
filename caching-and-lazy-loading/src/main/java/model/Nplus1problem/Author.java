@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "author")
 @Data
@@ -16,7 +19,12 @@ public class Author {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "author_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+    private List<Book> books = new ArrayList<>();
+
+    // Constructor
+    public Author(String name) {
+        this.name = name;
+    }
 }

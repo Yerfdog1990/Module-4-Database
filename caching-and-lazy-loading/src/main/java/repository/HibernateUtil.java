@@ -4,11 +4,21 @@ import model.lazyinitializationproblem.EmployeeBiDirManyToMany;
 import model.lazyinitializationproblem.TasksBiDirManyToMany;
 import model.Nplus1problem.Author;
 import model.Nplus1problem.Book;
+import org.h2.jdbcx.JdbcDataSource;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 
+import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public class HibernateUtil {
@@ -16,9 +26,53 @@ public class HibernateUtil {
   private static Class<?>[] getEntities() {
     return new Class<?>[] {
             EmployeeBiDirManyToMany.class,
-            TasksBiDirManyToMany.class
+            TasksBiDirManyToMany.class,
+            Author.class,
+            Book.class
     };
   }
+private static DataSource createDataSource() {
+    JdbcDataSource dataSource = new JdbcDataSource();
+    dataSource.setURL("jdbc:h2:mem:hibernate-orm-demo;DB_CLOSE_DELAY=-1;");
+    return ProxyDataSourceBuilder.create(dataSource)
+            .name("H2 DataSource")
+            .countQuery()
+            .build();
+}
+  private static SessionFactory createDataSourceProxySessionFactory() {
+    Map<String, Object> settings = getStringObjectMap();
+
+    StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
+    registryBuilder.applySettings(settings);
+
+    StandardServiceRegistry serviceRegistry = registryBuilder.build();
+    MetadataSources metadataSources = new MetadataSources(serviceRegistry);
+    metadataSources.addAnnotatedClass(EmployeeBiDirManyToMany.class);
+    metadataSources.addAnnotatedClass(TasksBiDirManyToMany.class);
+    metadataSources.addAnnotatedClass(Author.class);
+    metadataSources.addAnnotatedClass(Book.class);
+
+    Metadata metadata = metadataSources.getMetadataBuilder().build();
+    return metadata.buildSessionFactory();
+  }
+
+  private static Map<String, Object> getStringObjectMap() {
+    Map<String, Object> settings = new HashMap<>();
+    settings.put(AvailableSettings.DATASOURCE, createDataSource());
+    settings.put(AvailableSettings.HBM2DDL_AUTO, "create-drop");
+    settings.put(AvailableSettings.SHOW_SQL, "true");
+    settings.put(AvailableSettings.FORMAT_SQL, "true");
+    settings.put(AvailableSettings.USE_SQL_COMMENTS, "true");
+    settings.put(AvailableSettings.DIALECT, "org.hibernate.dialect.H2Dialect");
+    settings.put(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+    settings.put(AvailableSettings.STATEMENT_BATCH_SIZE, "50");
+    settings.put(AvailableSettings.ORDER_UPDATES, "true");
+    settings.put(AvailableSettings.USE_SECOND_LEVEL_CACHE, "false");
+    settings.put(AvailableSettings.USE_QUERY_CACHE, "false");
+    settings.put(AvailableSettings.AUTOCOMMIT, "false");
+    return settings;
+  }
+
   private static Configuration getConfiguration() {
     Configuration configuration = new Configuration();
     // Database connection settings
@@ -52,13 +106,8 @@ public class HibernateUtil {
   }
   // Configure hibernate
   public static SessionFactory getSessionFactory() {
-    try {
-      if (sessionFactory == null) {
-        sessionFactory = getConfiguration().buildSessionFactory();
-      }
-    } catch (Throwable ex) {
-      System.err.println("Initial SessionFactory creation failed." + ex);
-      throw new ExceptionInInitializerError(ex);
+    if (sessionFactory == null) {
+      sessionFactory = createDataSourceProxySessionFactory();
     }
     return sessionFactory;
   }
