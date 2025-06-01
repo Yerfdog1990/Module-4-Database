@@ -1,15 +1,13 @@
 package org.hibernate.inheritence.model.strategy.singletable;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
-@DiscriminatorValue("dog")
+@DiscriminatorValue("D")
 @EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
 public class Dog extends Animal {
