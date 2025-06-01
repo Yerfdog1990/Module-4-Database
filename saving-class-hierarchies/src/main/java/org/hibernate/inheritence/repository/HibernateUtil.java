@@ -17,6 +17,9 @@ import org.hibernate.inheritence.model.strategy.singletable.Dog;
 import org.hibernate.inheritence.model.strategy.tableperclass.Person;
 import org.hibernate.inheritence.model.strategy.tableperclass.Peter;
 import org.hibernate.inheritence.model.strategy.tableperclass.John;
+import org.hibernate.inheritence.model.strategy.mappedsupperclass.BMW;
+import org.hibernate.inheritence.model.strategy.mappedsupperclass.Benz;
+import org.hibernate.inheritence.model.strategy.mappedsupperclass.Car;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -51,7 +54,7 @@ private static DataSource createDataSource() {
 
     StandardServiceRegistry serviceRegistry = registryBuilder.build();
     MetadataSources metadataSources = new MetadataSources(serviceRegistry);
-    metadataSources.addAnnotatedClasses(Dog.class, Cat.class, Animal.class, Person.class, Peter.class, John.class);
+    metadataSources.addAnnotatedClasses(Dog.class, Cat.class, Animal.class, Person.class, Peter.class, John.class, BMW.class, Benz.class, Car.class);
 
 
     Metadata metadata = metadataSources.getMetadataBuilder().build();

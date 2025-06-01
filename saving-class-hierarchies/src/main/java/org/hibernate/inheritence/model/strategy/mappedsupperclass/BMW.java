@@ -6,13 +6,13 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class Benz extends Car{
+public class BMW extends Car{
     private String color;
 
-    public Benz(String name, String color) {
+    public BMW(String name, String color) {
         super(name);
         this.color = color;
     }
