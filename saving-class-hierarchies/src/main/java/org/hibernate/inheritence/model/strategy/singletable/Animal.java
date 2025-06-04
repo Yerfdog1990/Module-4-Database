@@ -9,8 +9,7 @@ import org.hibernate.annotations.DiscriminatorFormula;
 
 @Entity
 @Table(name = "animals")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING, length = 10)
