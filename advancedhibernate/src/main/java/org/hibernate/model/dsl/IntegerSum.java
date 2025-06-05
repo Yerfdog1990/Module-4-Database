@@ -1,4 +1,4 @@
-package hibernate.model.criteria.dsl;
+package org.hibernate.model.dsl;
 
 public class IntegerSum implements BinaryOperator<Integer> {
   @Override

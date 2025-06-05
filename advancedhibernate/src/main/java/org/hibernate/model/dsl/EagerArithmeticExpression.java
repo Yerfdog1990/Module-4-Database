@@ -1,4 +1,4 @@
-package hibernate.model.criteria.dsl;
+package org.hibernate.model.dsl;
 
 // Using the builder pattern to wrap a computation expressed in terms of an AST
 public class EagerArithmeticExpression<T> implements ArithmeticOperations<T> {

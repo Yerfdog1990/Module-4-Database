@@ -1,6 +1,8 @@
+package dsl;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import hibernate.model.criteria.dsl.*;
+import org.hibernate.model.dsl.*;
 import org.junit.jupiter.api.Test;
 
 public class ArithmeticDSLTest {

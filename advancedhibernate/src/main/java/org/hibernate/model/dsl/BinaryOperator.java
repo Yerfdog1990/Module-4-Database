@@ -1,4 +1,4 @@
-package hibernate.model.criteria.dsl;
+package org.hibernate.model.dsl;
 
 @FunctionalInterface
 public interface BinaryOperator<T> {

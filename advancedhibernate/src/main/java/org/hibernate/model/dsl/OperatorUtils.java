@@ -1,4 +1,4 @@
-package hibernate.model.criteria.dsl;
+package org.hibernate.model.dsl;
 
 public class OperatorUtils {
   static <T> T apply(BinaryOperator<T> operator, T t1, T t2) {

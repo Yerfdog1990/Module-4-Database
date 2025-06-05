@@ -1,4 +1,4 @@
-package hibernate.model.criteria.dsl;
+package org.hibernate.model.dsl;
 
 public class IntegerSubtraction implements BinaryOperator<Integer> {
   private Integer subtraction(Integer t1, Integer t2) {

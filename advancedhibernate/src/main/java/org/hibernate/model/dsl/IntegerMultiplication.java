@@ -1,4 +1,4 @@
-package hibernate.model.criteria.dsl;
+package org.hibernate.model.dsl;
 
 public class IntegerMultiplication implements BinaryOperator<Integer> {
   private Integer multiplication(Integer t1, Integer t2) {
