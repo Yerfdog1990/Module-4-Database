@@ -3,10 +3,9 @@ package criteriaAPI;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import java.util.List;
+import org.hibernate.Session;
 import org.hibernate.model.criteriaAPI.Department;
 import org.hibernate.model.criteriaAPI.Employee;
 import org.hibernate.repository.HibernateUtil;
@@ -181,6 +180,156 @@ public class EmployeeTest {
           List<Employee> result = session.createQuery(query).getResultList();
           assertEquals(20, result.size());
           return result;
+        });
+  }
+
+  @Test
+  void advancedWorkWithCriteriaAPI() {
+    HibernateUtil.doWithSession(
+        session -> {
+          CriteriaBuilder builder = session.getCriteriaBuilder();
+          CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+          Root<Employee> root = query.from(Employee.class);
+
+          Predicate salaryGreaterThan150k = builder.gt(root.get("salary"), 150000.0);
+          Predicate managerPosition = builder.like(root.get("occupation"), "%manager%");
+          query.select(root).where(builder.or(salaryGreaterThan150k, managerPosition));
+
+          List<Employee> result = session.createQuery(query).getResultList();
+
+          assertThat(result).hasSize(7);
+          return result;
+        });
+  }
+
+  @Test
+  void sortingTest() {
+    HibernateUtil.doWithSession(
+        session -> {
+          CriteriaBuilder builder = session.getCriteriaBuilder();
+          CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+          Root<Employee> root = query.from(Employee.class);
+
+          query
+              .select(root)
+              .orderBy(builder.desc(root.get("salary")), builder.asc(root.get("name")));
+
+          List<Employee> result = session.createQuery(query).getResultList();
+
+          assertThat(result).hasSize(20);
+          assertThat(result.get(0).getSalary()).isEqualTo(180_000.0);
+          assertThat(result.get(0).getName()).isEqualTo("Michael");
+
+          return result;
+        });
+  }
+
+  @Test
+  void groupingAndAggregation() {
+    HibernateUtil.doWithSession(
+        session -> {
+          CriteriaBuilder builder = session.getCriteriaBuilder();
+
+          // Count the total number of employees
+          CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+          countQuery.select(builder.count(countQuery.from(Employee.class)));
+          Long employeeCount = session.createQuery(countQuery).getSingleResult();
+          assertThat(employeeCount).isEqualTo(20L);
+
+          // Calculate average salary
+          CriteriaQuery<Double> avgQuery = builder.createQuery(Double.class);
+          Root<Employee> root = avgQuery.from(Employee.class);
+          avgQuery.select(builder.avg(root.get("salary")));
+          Double averageSalary = session.createQuery(avgQuery).getSingleResult();
+          assertThat(averageSalary).isEqualTo(130750.0);
+
+          return null;
+        });
+  }
+
+  private CriteriaUpdate<Employee> updateSalariesForLowEarners(
+      Session session, double percentageIncrease, double salaryThreshold) {
+    CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+    CriteriaUpdate<Employee> salaryUpdate = criteriaBuilder.createCriteriaUpdate(Employee.class);
+    Root<Employee> employeeRoot = salaryUpdate.from(Employee.class);
+    double salaryMultiplier = 1 + (percentageIncrease / 100);
+
+    salaryUpdate
+        .set(
+            employeeRoot.<Double>get("salary"),
+            criteriaBuilder.prod(employeeRoot.get("salary"), salaryMultiplier))
+        .where(criteriaBuilder.lt(employeeRoot.get("salary"), salaryThreshold));
+
+    // Execute the update query
+    session.createQuery(salaryUpdate).executeUpdate();
+
+    return salaryUpdate;
+  }
+
+  @Test
+  void updateDatabase() {
+    HibernateUtil.doWithSession(
+        session -> {
+          updateSalariesForLowEarners(session, 10.0, 100000.0); // 10% increase for salaries < 100k
+          return null;
+        });
+  }
+
+  @Test
+  void testDeleteHighSalaryEmployees() {
+    HibernateUtil.doWithSession(
+        session -> {
+          // Count employees before deletion
+          CriteriaBuilder builder = session.getCriteriaBuilder();
+          CriteriaQuery<Long> countQuery = builder.createQuery(Long.class);
+          countQuery.select(builder.count(countQuery.from(Employee.class)));
+          Long beforeCount = session.createQuery(countQuery).getSingleResult();
+
+          // Delete high salary employees
+          deleteEmployeesWithSalaryGreaterThan100000(session);
+
+          // Count employees after deletion
+          Long afterCount = session.createQuery(countQuery).getSingleResult();
+
+          // Verify deletion
+          assertThat(beforeCount).isEqualTo(20L);
+          assertThat(afterCount).isEqualTo(2L);
+          return null;
+        });
+  }
+
+  void deleteEmployeesWithSalaryGreaterThan100000(Session session) {
+    CriteriaBuilder builder = session.getCriteriaBuilder();
+    CriteriaDelete<Employee> delete = builder.createCriteriaDelete(Employee.class);
+    Root<Employee> root = delete.from(Employee.class);
+    delete.where(builder.gt(root.get("salary"), 100000.0));
+    session.createQuery(delete).executeUpdate();
+  }
+
+  @Test
+  void paginationTest() {
+    HibernateUtil.doWithSession(
+        session -> {
+          CriteriaBuilder builder = session.getCriteriaBuilder();
+          CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+          Root<Employee> root = query.from(Employee.class);
+
+          query.select(root).orderBy(builder.asc(root.get("name")));
+
+          // Get first page (5 employees)
+          List<Employee> firstPage =
+              session.createQuery(query).setFirstResult(0).setMaxResults(5).getResultList();
+
+          // Get the second page (next 5 employees)
+          List<Employee> secondPage =
+              session.createQuery(query).setFirstResult(5).setMaxResults(5).getResultList();
+
+          assertThat(firstPage).hasSize(5);
+          assertThat(secondPage).hasSize(5);
+          assertThat(firstPage.get(0).getName()).isEqualTo("Alexander");
+          assertThat(secondPage.get(0).getName()).isEqualTo("Isabella");
+
+          return null;
         });
   }
 }
