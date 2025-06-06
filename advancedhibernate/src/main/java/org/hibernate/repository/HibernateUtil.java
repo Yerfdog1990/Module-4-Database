@@ -16,13 +16,15 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.model.criteriaAPI.City;
+import org.hibernate.model.criteriaAPI.Department;
+import org.hibernate.model.criteriaAPI.Employee;
 import org.hibernate.model.criteriaAPI.Person;
 
 public class HibernateUtil {
   private static SessionFactory sessionFactory;
 
   private static Class<?>[] getEntities() {
-    return new Class<?>[] {Person.class, City.class};
+    return new Class<?>[] {Person.class, City.class, Department.class, Employee.class};
   }
 
   private static DataSource createDataSource() {
@@ -39,7 +41,7 @@ public class HibernateUtil {
 
     StandardServiceRegistry serviceRegistry = registryBuilder.build();
     MetadataSources metadataSources = new MetadataSources(serviceRegistry);
-    metadataSources.addAnnotatedClasses(Person.class, City.class);
+    metadataSources.addAnnotatedClasses(Person.class, City.class, Department.class, Employee.class);
 
     Metadata metadata = metadataSources.getMetadataBuilder().build();
     return metadata.buildSessionFactory();
