@@ -16,10 +16,13 @@ public class Person {
   private String name;
   private Integer age;
 
-  @ManyToOne private City city;
+  @ManyToOne
+  @JoinColumn(name = "city_id", nullable = false)
+  private City city;
 
-  public Person(String name, Integer age) {
+  public Person(String name, Integer age, City city) {
     this.name = name;
     this.age = age;
+    this.city = city;
   }
 }

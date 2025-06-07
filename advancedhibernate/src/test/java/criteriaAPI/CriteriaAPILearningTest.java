@@ -20,12 +20,14 @@ public class CriteriaAPILearningTest {
     doWithSession(
         session -> {
           // Create a city and persist it in the database
-          City city1 = new City("Paris");
-          session.persist(city1);
+          City paris = new City("Paris");
+          City newYork = new City("New York");
+          session.persist(paris);
+          session.persist(newYork);
 
           // Create persons and persist them in the database
-          Person person1 = new Person("John", 30);
-          Person person2 = new Person("Jane", 25);
+          Person person1 = new Person("John", 30, paris);
+          Person person2 = new Person("Jane", 25, newYork);
           session.persist(person1);
           session.persist(person2);
           return null;
