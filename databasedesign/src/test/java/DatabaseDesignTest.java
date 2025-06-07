@@ -89,6 +89,11 @@ public class DatabaseDesignTest {
                   .setCacheRegion("employee.list")
                   .setHint(QueryHints.CACHE_MODE, "NORMAL")
                   .getResultList();
+
+          assertEquals(0, employees.size());
+          assertEquals(true, employees instanceof List);
+          assertThat(employees).isInstanceOf(List.class);
+          assertThat(employees.size()).isZero();
           return null;
         });
   }
