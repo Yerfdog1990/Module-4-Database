@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(onlyExplicitlyIncluded = true) // Use explicit fields for toString
+@ToString(onlyExplicitlyIncluded = true)
 public class Employee {
 
   @Id
@@ -24,7 +24,9 @@ public class Employee {
 
   private Double salary;
 
-  @ManyToOne private Department department;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "department_id", nullable = false) // Enforce valid department reference
+  private Department department;
 
   public Employee(String name, String occupation, Double salary, Department department) {
     this.name = name;
@@ -33,7 +35,14 @@ public class Employee {
     this.department = department;
   }
 
-  // Prevent recursive toString() - exclude department from the string representation
+  // Helper method for unlinking from department
+  public void unlinkDepartment() {
+    if (this.department != null) {
+      this.department.getEmployees().remove(this);
+      this.department = null;
+    }
+  }
+
   @Override
   public String toString() {
     return "Employee{id="

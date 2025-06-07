@@ -1,6 +1,7 @@
 package org.hibernate.model.criteriaAPI;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(onlyExplicitlyIncluded = true) // Use explicit fields for toString
+@ToString(onlyExplicitlyIncluded = true)
 public class Department {
 
   @Id
@@ -21,18 +22,28 @@ public class Department {
 
   @ToString.Include private String name;
 
+  // Cascade only persist and merge to avoid accidental deletes
   @OneToMany(
       mappedBy = "department",
-      cascade = CascadeType.ALL,
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE},
       orphanRemoval = true,
       fetch = FetchType.EAGER)
-  private List<Employee> employees = new java.util.ArrayList<>();
+  private List<Employee> employees = new ArrayList<>();
 
   public Department(String name) {
     this.name = name;
   }
 
-  // Prevent recursive toString() - we exclude employees from the string representation
+  public void addEmployee(Employee employee) {
+    employees.add(employee);
+    employee.setDepartment(this);
+  }
+
+  public void removeEmployee(Employee employee) {
+    employees.remove(employee);
+    employee.setDepartment(null);
+  }
+
   @Override
   public String toString() {
     return "Department{id=" + id + ", name='" + name + "'}";

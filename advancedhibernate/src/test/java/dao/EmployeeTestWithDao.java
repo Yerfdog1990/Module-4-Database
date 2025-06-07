@@ -12,11 +12,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EmployeeDAO {
+class EmployeeDAO<T> {
   private final Session session;
+  private final Class<T> entityClass;
 
-  public EmployeeDAO(Session session) {
+  public EmployeeDAO(Session session, Class<T> entityClass) {
     this.session = session;
+    this.entityClass = entityClass;
   }
 
   public List<Employee> getEmployeeList(int from, int count) {
@@ -39,19 +41,45 @@ class EmployeeDAO {
     query.setParameter("name", name);
     return query.getSingleResult();
   }
+
+  public T save(final T entity) {
+    session.persist(entity);
+    return entity;
+  }
+
+  public T update(final T entity) {
+    return session.merge(entity);
+  }
+
+  public void delete(final T entity) {
+    session.remove(entity);
+  }
+
+  public void deleteById(final long entityId) {
+    T entity = session.get(entityClass, entityId);
+    if (entity != null) {
+      session.remove(entity);
+    }
+  }
 }
 
 public class EmployeeTestWithDao {
+  private Department it;
+  private Department hr;
+  private Department marketing;
+  private Department finance;
+  private Department sales;
+
   @BeforeEach
   void setUp() {
     HibernateUtil.doWithSession(
         session -> {
           // Create new Department objects and persist them to the database
-          Department it = new Department("IT");
-          Department hr = new Department("HR");
-          Department marketing = new Department("Marketing");
-          Department finance = new Department("Finance");
-          Department sales = new Department("Sales");
+          it = new Department("IT");
+          hr = new Department("HR");
+          marketing = new Department("Marketing");
+          finance = new Department("Finance");
+          sales = new Department("Sales");
 
           session.persist(it);
           session.persist(hr);
@@ -121,7 +149,7 @@ public class EmployeeTestWithDao {
   void learnDao() {
     HibernateUtil.doWithSession(
         session -> {
-          EmployeeDAO employeeDAO = new EmployeeDAO(session);
+          EmployeeDAO<Employee> employeeDAO = new EmployeeDAO<>(session, Employee.class);
 
           // Test getEmployeeList
           List<Employee> employees = employeeDAO.getEmployeeList(0, 5);
@@ -141,6 +169,25 @@ public class EmployeeTestWithDao {
           Employee john = employeeDAO.getEmployeeByUniqName("John");
           System.out.println("Found employee: " + john.getName());
           assertEquals("John", john.getName());
+
+          // Test save
+          Employee newEmployee = new Employee("TestEmployee", "Tester", 100_000.0, it);
+          Employee savedEmployee = employeeDAO.save(newEmployee);
+          assertEquals("TestEmployee", savedEmployee.getName());
+
+          // Test update
+          savedEmployee.setSalary(110_000.0);
+          Employee updatedEmployee = employeeDAO.update(savedEmployee);
+          assertEquals(110_000.0, updatedEmployee.getSalary());
+
+          // Test delete
+          employeeDAO.delete(updatedEmployee);
+          assertEquals(20, employeeDAO.getEmployeeCount());
+
+          // Test deleteById
+          Employee employeeToDelete = employeeDAO.getEmployeeByUniqName("Jane");
+          employeeDAO.deleteById(employeeToDelete.getId());
+          assertEquals(19, employeeDAO.getEmployeeCount());
 
           return null;
         });
