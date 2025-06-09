@@ -26,4 +26,16 @@ public class JdbcUtils {
       }
     }
   }
+
+  public static void setUpDatabase() throws SQLException, InterruptedException {
+    JdbcUtils.doWithStatement(
+        statement -> {
+          try {
+            statement.execute("CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)");
+            statement.execute("INSERT INTO accounts (id, balance) VALUES (1, 100)");
+          } catch (SQLException e) {
+            throw new RuntimeException(e);
+          }
+        });
+  }
 }

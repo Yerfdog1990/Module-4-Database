@@ -1,15 +1,17 @@
 package txtisolationdemo;
 
+import static txisolationdemo.JdbcUtils.doWithStatement;
+import static txisolationdemo.JdbcUtils.setUpDatabase;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
-import txisolationdemo.JdbcUtils;
 
 public class LostUpdateExampleTest {
 
   // Update account balance using a read-modify-write cycle
   private void updateBalance(int accountId, int amount) throws SQLException, InterruptedException {
-    JdbcUtils.doWithStatement(
+    doWithStatement(
         statement -> {
           try {
             // Step 1: Read the current balance
@@ -40,7 +42,7 @@ public class LostUpdateExampleTest {
 
   // Display current account balance
   private void displayBalance(int accountId) throws SQLException, InterruptedException {
-    JdbcUtils.doWithStatement(
+    doWithStatement(
         statement -> {
           try {
             String query = "SELECT balance FROM accounts WHERE id = " + accountId;
@@ -62,17 +64,7 @@ public class LostUpdateExampleTest {
   @Test
   void recreateLostUpdate() throws SQLException, InterruptedException {
     // Create a table and insert a row
-    JdbcUtils.doWithStatement(
-        statement -> {
-          try {
-            String createTable = "CREATE TABLE accounts (id INT PRIMARY KEY, balance INT)";
-            String insert = "INSERT INTO accounts (id, balance) VALUES (1, 100)";
-            statement.execute(createTable);
-            statement.execute(insert);
-          } catch (SQLException e) {
-            throw new RuntimeException(e);
-          }
-        });
+    setUpDatabase();
 
     // Run concurrent balance updates
     Thread t1 =
