@@ -3,9 +3,9 @@ package txtisolationdemo;
 import static txisolationdemo.JdbcUtils.doWithStatement;
 import static txisolationdemo.JdbcUtils.setUpDatabase;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
+import txisolationdemo.JdbcUtils;
 
 public class LostUpdateExampleTest {
 
@@ -15,25 +15,18 @@ public class LostUpdateExampleTest {
         statement -> {
           try {
             // Step 1: Read the current balance
-            String selectBalance = "SELECT balance FROM accounts WHERE id = " + accountId;
-            ResultSet resultSet = statement.executeQuery(selectBalance);
+            int balance = JdbcUtils.queryBalance(statement);
+            System.out.printf(
+                "[%s] - Current balance: %d%n", Thread.currentThread().getName(), balance);
 
-            if (resultSet.next()) {
-              int balance = resultSet.getInt("balance");
-              System.out.printf(
-                  "[%s] - Current balance: %d%n", Thread.currentThread().getName(), balance);
+            // Simulate race condition
+            Thread.sleep(Math.round(Math.random() * 1000));
 
-              // Simulate race condition
-              Thread.sleep(Math.round(Math.random() * 1000));
-
-              // Step 2: Update balance
-              int updatedBalance = balance + amount;
-              String update =
-                  "UPDATE accounts SET balance = " + updatedBalance + " WHERE id = " + accountId;
-              statement.executeUpdate(update);
-              System.out.printf(
-                  "[%s] - Updated balance: %d%n", Thread.currentThread().getName(), updatedBalance);
-            }
+            // Step 2: Update balance
+            int updatedBalance = balance + amount;
+            JdbcUtils.updateBalance(updatedBalance, statement);
+            System.out.printf(
+                "[%s] - Updated balance: %d%n", Thread.currentThread().getName(), updatedBalance);
           } catch (SQLException | InterruptedException e) {
             throw new RuntimeException(e);
           }
@@ -41,23 +34,10 @@ public class LostUpdateExampleTest {
   }
 
   // Display current account balance
-  private void displayBalance(int accountId) throws SQLException, InterruptedException {
-    doWithStatement(
-        statement -> {
-          try {
-            String query = "SELECT balance FROM accounts WHERE id = " + accountId;
-            ResultSet resultSet = statement.executeQuery(query);
-
-            if (resultSet.next()) {
-              int balance = resultSet.getInt("balance");
-              System.out.printf(
-                  "[%s] - Account %d balance: %d%n",
-                  Thread.currentThread().getName(), accountId, balance);
-            }
-          } catch (SQLException e) {
-            throw new RuntimeException(e);
-          }
-        });
+  private void displayBalance() throws SQLException, InterruptedException {
+    JdbcUtils.queryBalance();
+    System.out.printf(
+        "[%s] - Account balance: %d%n", Thread.currentThread().getName(), JdbcUtils.queryBalance());
   }
 
   // Test case that simulates a lost update scenario
@@ -93,6 +73,6 @@ public class LostUpdateExampleTest {
     t2.join();
 
     // Show final balance
-    displayBalance(1); // Expected result may vary due to race condition
+    displayBalance(); // Expected result may vary due to race condition
   }
 }

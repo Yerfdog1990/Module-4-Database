@@ -1,23 +1,32 @@
 package txisolationdemo;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.function.Consumer;
 
 public class JdbcUtils {
-  private static final String JdbcUrl = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
-  private static final String username = "sa";
-  private static final String password = "";
+  private static final String JDBC_URL = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
+  private static final String USERNAME = "sa";
+  private static final String PASSWORD = "";
+  private static final int ACCOUNT_ID = 1;
 
   public static void doWithStatement(Consumer<Statement> consumer)
       throws SQLException, InterruptedException {
-    try (Connection connection = DriverManager.getConnection(JdbcUrl, username, password)) {
+    StatementFunction<Void> function =
+        statement -> {
+          consumer.accept(statement);
+          return null;
+        };
+    doWithStatement(function);
+  }
+
+  public static <T> T doWithStatement(StatementFunction<T> function)
+      throws SQLException, InterruptedException {
+    try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
       connection.setAutoCommit(false);
       try (Statement statement = connection.createStatement()) {
-        consumer.accept(statement);
+        T result = function.accept(statement);
         connection.commit();
+        return result;
       } catch (SQLException e) {
         connection.rollback();
         throw e;
@@ -25,6 +34,28 @@ public class JdbcUtils {
         connection.setAutoCommit(true);
       }
     }
+  }
+
+  public static int queryBalance() throws SQLException, InterruptedException {
+    StatementFunction<Integer> function = JdbcUtils::queryBalance;
+    return doWithStatement(function);
+  }
+
+  public static Integer queryBalance(Statement statement)
+      throws SQLException, InterruptedException {
+    String query = "SELECT balance FROM accounts WHERE id = " + ACCOUNT_ID;
+    ResultSet resultSet = statement.executeQuery(query);
+    if (resultSet.next()) {
+      return resultSet.getInt(1);
+    } else {
+      return null;
+    }
+  }
+
+  public static void updateBalance(int amount, Statement statement) throws SQLException {
+    String update =
+        "UPDATE accounts SET balance = balance + " + amount + " WHERE id = " + ACCOUNT_ID;
+    statement.executeUpdate(update);
   }
 
   public static void setUpDatabase() throws SQLException, InterruptedException {
