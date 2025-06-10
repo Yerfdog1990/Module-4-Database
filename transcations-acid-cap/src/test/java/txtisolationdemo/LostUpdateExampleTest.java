@@ -13,23 +13,23 @@ public class LostUpdateExampleTest {
   private void updateBalance(int accountId, int amount) throws SQLException, InterruptedException {
     doWithStatement(
         statement -> {
+          // Step 1: Read the current balance
+          int balance = JdbcUtils.queryBalance(statement);
+          System.out.printf(
+              "[%s] - Current balance: %d%n", Thread.currentThread().getName(), balance);
+
+          // Simulate race condition
           try {
-            // Step 1: Read the current balance
-            int balance = JdbcUtils.queryBalance(statement);
-            System.out.printf(
-                "[%s] - Current balance: %d%n", Thread.currentThread().getName(), balance);
-
-            // Simulate race condition
             Thread.sleep(Math.round(Math.random() * 1000));
-
-            // Step 2: Update balance
-            int updatedBalance = balance + amount;
-            JdbcUtils.updateBalance(updatedBalance, statement);
-            System.out.printf(
-                "[%s] - Updated balance: %d%n", Thread.currentThread().getName(), updatedBalance);
-          } catch (SQLException | InterruptedException e) {
+          } catch (InterruptedException e) {
             throw new RuntimeException(e);
           }
+
+          // Step 2: Update balance
+          int updatedBalance = balance + amount;
+          JdbcUtils.updateBalance(updatedBalance, statement);
+          System.out.printf(
+              "[%s] - Updated balance: %d%n", Thread.currentThread().getName(), updatedBalance);
         });
   }
 

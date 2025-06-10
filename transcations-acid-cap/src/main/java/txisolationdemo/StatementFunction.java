@@ -1,8 +1,6 @@
 package txisolationdemo;
 
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.function.Function;
 
-public interface StatementFunction<T> {
-  T accept(Statement statement) throws SQLException, InterruptedException;
-}
+public interface StatementFunction<T> extends Function<Statement, T> {}
