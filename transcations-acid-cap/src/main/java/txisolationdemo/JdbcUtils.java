@@ -21,7 +21,6 @@ public class JdbcUtils {
           consumer.accept(statement);
           return null;
         };
-
     doWithStatement(fx);
   }
 

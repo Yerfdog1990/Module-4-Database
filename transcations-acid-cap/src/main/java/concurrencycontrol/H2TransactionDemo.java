@@ -57,7 +57,7 @@ public class H2TransactionDemo {
               pstmt.setInt(3, 1);
               pstmt.executeUpdate();
               connection.commit();
-              System.out.println("\nAccount balance reset to 100.00 for optimistic demo.");
+              System.out.println("\nAccount balance reset to 100 for optimistic demo.");
             } catch (SQLException e) {
               connection.rollback();
               System.err.println("Failed to reset balance: " + e.getMessage());
@@ -77,11 +77,11 @@ public class H2TransactionDemo {
    * transactions wait or fail.
    *
    * <p>Transaction Phases (Conceptual): 1. Validate (Acquire Locks): Set isolation level to
-   * SERIALIZABLE. The database system takes care of acquiring necessary shared/exclusive locks (or
-   * other concurrency control mechanisms like predicate locks) to ensure that the data read remains
-   * stable for the duration of the transaction. If another transaction has an incompatible lock,
-   * this transaction will wait. 2. Read: Retrieve the account balance. 3. Compute: Calculate the
-   * new balance. 4. Write (Release Locks): Update the balance. Locks are held until
+   * SERIALIZABLE. The database system takes care of acquiring the necessary shared/exclusive locks
+   * (or other concurrency control mechanisms like predicate locks) to ensure that the data read
+   * remains stable for the duration of the transaction. If another transaction has an incompatible
+   * lock, this transaction will wait. 2. Read: Retrieve the account balance. 3. Compute: Calculate
+   * the new balance. 4. Write (Release Locks): Update the balance. Locks are held until
    * commit/rollback.
    */
   static void runPessimisticTransaction(String userName, int accountId, double amountToDeposit)
