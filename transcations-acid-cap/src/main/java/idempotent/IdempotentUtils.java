@@ -3,7 +3,7 @@ package idempotent;
 import java.sql.*;
 import java.util.function.Consumer;
 
-public class IdempotentOnly {
+public class IdempotentUtils {
 
   private static Connection doWithConnection(Consumer<Connection> consumer) throws SQLException {
     // H2 Database URL for an in-memory database.
