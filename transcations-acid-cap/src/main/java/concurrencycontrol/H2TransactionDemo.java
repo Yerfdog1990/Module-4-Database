@@ -11,12 +11,19 @@ import java.util.function.Consumer;
 public class H2TransactionDemo {
 
   /** Initializes the H2 in-memory database and creates an ACCOUNTS table. */
-  static Connection doWithConnection(Consumer<Connection> connection) throws SQLException {
+  private static Connection doWithConnection(Consumer<Connection> connection) throws SQLException {
     String JDBC_URL = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
     String USER = "sa";
     String PASSWORD = "";
     Connection conn = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
     connection.accept(conn);
+    if (conn != null) {
+      try {
+        conn.close();
+      } catch (SQLException e) {
+        System.err.println("Error closing connection: " + e.getMessage());
+      }
+    }
     return conn;
   }
 

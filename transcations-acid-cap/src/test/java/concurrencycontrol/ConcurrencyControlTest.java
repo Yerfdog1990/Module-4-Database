@@ -17,7 +17,7 @@ public class ConcurrencyControlTest {
     initializeDatabase();
 
     System.out.println("--- Demonstrating Pessimistic Transaction Flow ---");
-    // Run pessimistic transactions concurrently to show locking effects conceptually
+    // Run pessimistic transactions concurrently to show the locking effects conceptually
     ExecutorService pessimisticExecutor = Executors.newFixedThreadPool(2);
     pessimisticExecutor.submit(
         () -> {
