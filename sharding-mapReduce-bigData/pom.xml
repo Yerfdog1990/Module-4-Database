@@ -13,5 +13,32 @@
         <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <dependencies>
+        <!-- Hadoop Core dependency -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>3.3.1</version>
+        </dependency>
 
+        <!-- Hadoop MapReduce Client Core -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
+        <!-- Hadoop MapReduce Client Common -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-common</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+    </dependencies>
+    <configuration>
+        <property>
+            <name>hadoop.security.authentication</name>
+            <value>simple</value>
+        </property>
+    </configuration>
 </project>
