@@ -35,6 +35,13 @@
             <version>3.9.1</version>
         </dependency>
 
+        <!-- Lombok for reducing boilerplate code through annotations -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
+        </dependency>
+
         <!-- Lettuce Redis client for Redis database operations -->
         <dependency>
             <groupId>io.lettuce</groupId>
