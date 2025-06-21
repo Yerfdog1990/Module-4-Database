@@ -1,11 +1,10 @@
 package com.codegym.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.util.Set;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(schema = "world", name = "country")
@@ -55,7 +54,7 @@ public class Country {
   @Column(name = "head_of_state")
   private String headOfState;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "capital")
   private City city;
 

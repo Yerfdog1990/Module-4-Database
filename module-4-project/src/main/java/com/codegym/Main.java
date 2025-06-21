@@ -57,12 +57,12 @@ public class Main {
     properties.put(Environment.STATEMENT_BATCH_SIZE, "100");
 
     sessionFactory =
-            new Configuration()
-                    .addAnnotatedClass(City.class)
-                    .addAnnotatedClass(Country.class)
-                    .addAnnotatedClass(CountryLanguage.class)
-                    .addProperties(properties)
-                    .buildSessionFactory();
+        new Configuration()
+            .addAnnotatedClass(City.class)
+            .addAnnotatedClass(Country.class)
+            .addAnnotatedClass(CountryLanguage.class)
+            .addProperties(properties)
+            .buildSessionFactory();
     return sessionFactory;
   }
 
@@ -80,6 +80,7 @@ public class Main {
       List<City> allCities = new ArrayList<>();
       session.beginTransaction();
 
+      List<Country> countries = main.countryDAO.getAll();
       int totalCount = main.cityDAO.getTotalCount();
       int step = 500;
       for (int i = 0; i < totalCount; i += step) {
