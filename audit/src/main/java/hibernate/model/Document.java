@@ -1,7 +1,7 @@
 package hibernate.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,15 +20,14 @@ public class Document {
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
-  private LocalDate createdDate;
+  private LocalDateTime createdDate;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private LocalDate updatedDate;
+  private LocalDateTime updatedDate;
 
   // Constructor
   public Document(String name) {
     this.name = name;
-    this.createdDate = LocalDate.now();
   }
 }
