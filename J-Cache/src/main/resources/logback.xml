@@ -1,0 +1,35 @@
+<configuration>
+
+    <!-- Console appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Set log level for Hibernate to show SQL statements -->
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- Disable BasicBinder logger to avoid duplicate logs -->
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="OFF">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- Disable binding logging from BasicExtractor (used in some cases) -->
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="OFF">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- Enable logging of prepared statement binding only once -->
+    <logger name="org.hibernate.orm.jdbc.bind" level="TRACE" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!-- Root logger configuration -->
+    <root level="WARN">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
