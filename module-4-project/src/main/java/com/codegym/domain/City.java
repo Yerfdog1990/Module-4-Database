@@ -2,10 +2,12 @@ package com.codegym.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(schema = "world", name = "city")
+@EqualsAndHashCode(of = {"id"})
 @Data
 @NoArgsConstructor
 public class City {

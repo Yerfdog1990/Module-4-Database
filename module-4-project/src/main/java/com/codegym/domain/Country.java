@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(schema = "world", name = "country")
+@EqualsAndHashCode(of = {"id"})
 @Data
 @NoArgsConstructor
 public class Country {
