@@ -27,9 +27,9 @@ import org.hibernate.dialect.H2Dialect;
 
 public final class HibernateUtil {
 
-  private final SessionFactory sessionFactory = buildSessionFactory();
+  private static final SessionFactory sessionFactory = buildSessionFactory();
 
-  public void runInTransaction(final Consumer<Session> consumer) {
+  public static void runInTransaction(final Consumer<Session> consumer) {
     Function<Session, Void> fx =
         ((session1) -> {
           consumer.accept(session1);
@@ -38,7 +38,7 @@ public final class HibernateUtil {
     runInTransaction(getSession(), fx);
   }
 
-  private <T> T runInTransaction(final Session session, final Function<Session, T> function) {
+  private static  <T> T runInTransaction(final Session session, final Function<Session, T> function) {
     Transaction transaction = session.beginTransaction();
     T result;
     try (session) {
@@ -48,11 +48,11 @@ public final class HibernateUtil {
     }
   }
 
-  public <T> T runInTransaction(final Function<Session, T> function) {
+  public static  <T> T runInTransaction(final Function<Session, T> function) {
     return runInTransaction(getSession(), function);
   }
 
-  private Session getSession() {
+  private static Session getSession() {
     return sessionFactory.openSession();
   }
 
