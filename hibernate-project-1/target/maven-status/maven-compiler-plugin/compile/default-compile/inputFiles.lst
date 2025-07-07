@@ -1,0 +1,12 @@
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/controller/PlayerInfo.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/service/PlayerService.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/config/MyWebAppInit.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/entity/Profession.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/controller/PlayerController.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/repository/PlayerRepositoryDB.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/config/AppConfig.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/entity/Race.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/repository/PlayerRepositoryMemory.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/config/WebConfig.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/entity/Player.java
+/Users/godfrey/IdeaProjects/Module-4-Courses/Module-4-Database/project-hibernate-1/src/main/java/com/game/repository/IPlayerRepository.java

@@ -1,0 +1,13 @@
+com/game/entity/Race.class
+com/game/repository/PlayerRepositoryDB.class
+com/game/repository/PlayerRepositoryMemory.class
+com/game/config/WebConfig.class
+com/game/entity/Profession.class
+com/game/controller/PlayerInfo.class
+com/game/config/MyWebAppInit.class
+com/game/controller/PlayerController.class
+com/game/config/AppConfig.class
+com/game/repository/IPlayerRepository.class
+com/game/entity/Player.class
+com/game/repository/PlayerRepositoryMemory$1.class
+com/game/service/PlayerService.class
