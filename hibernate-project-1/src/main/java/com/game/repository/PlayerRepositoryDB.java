@@ -22,7 +22,7 @@ public class PlayerRepositoryDB implements IPlayerRepository {
     properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
     properties.put(Environment.JAKARTA_JDBC_DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
     properties.put(Environment.JAKARTA_JDBC_URL, "jdbc:p6spy:mysql://localhost:3306/rpg");
-    properties.put(Environment.JAKARTA_JDBC_USER, "root");
+    properties.put(Environment.JAKARTA_JDBC_USER, "yerfdog");
     properties.put(Environment.JAKARTA_JDBC_PASSWORD, "Cyril@2019");
     properties.put(Environment.SHOW_SQL, "true");
     properties.put(Environment.HBM2DDL_AUTO, "update");
