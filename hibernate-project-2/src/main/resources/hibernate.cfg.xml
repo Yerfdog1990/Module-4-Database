@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/movie?useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.username">yerfdog</property>
+        <property name="hibernate.connection.password">Cyril@2019</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Connection pool -->
+        <property name="hibernate.hikari.minimumIdle">5</property>
+        <property name="hibernate.hikari.maximumPoolSize">20</property>
+        <property name="hibernate.hikari.idleTimeout">30000</property>
+
+        <!-- Hibernate dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+        <!-- Other properties -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Entity mappings -->
+        <mapping class="com.hibernate.domain.Actor"/>
+        <mapping class="com.hibernate.domain.Inventory"/>
+        <mapping class="com.hibernate.domain.FilmText"/>
+        <mapping class="com.hibernate.domain.Category"/>
+        <mapping class="com.hibernate.domain.Film"/>
+        <mapping class="com.hibernate.domain.Language"/>
+        <mapping class="com.hibernate.domain.Customer"/>
+        <mapping class="com.hibernate.domain.Store"/>
+        <mapping class="com.hibernate.domain.Staff"/>
+        <mapping class="com.hibernate.domain.Address"/>
+        <mapping class="com.hibernate.domain.City"/>
+        <mapping class="com.hibernate.domain.Country"/>
+        <mapping class="com.hibernate.domain.Payment"/>
+        <mapping class="com.hibernate.domain.Rental"/>
+    </session-factory>
+</hibernate-configuration>
