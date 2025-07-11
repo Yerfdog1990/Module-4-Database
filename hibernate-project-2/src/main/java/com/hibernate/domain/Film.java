@@ -26,7 +26,7 @@ public class Film {
     private String description;
 
     @Column(name = "release_year", columnDefinition = "year")
-    // TODO Converter
+    @Convert(converter = YearAttributeConverter.class)
     private Year year;
 
     @ManyToOne
@@ -49,7 +49,7 @@ public class Film {
     private BigDecimal replacementCost;
 
     @Column(columnDefinition = "enum('G', 'PG', 'PG-13', 'R', 'NC-17')")
-    // TODO Converter
+    @Convert(converter = RatingAttributeConverter.class)
     private Rating rating;
 
     @Column(name = "special_features", columnDefinition = "set('Trailers', 'Commentaries', 'Deleted Scenes', Behind the Scenes)")

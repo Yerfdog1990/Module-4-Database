@@ -17,6 +17,7 @@ public class FilmText {
     // TODO: @Id
     @OneToOne
     @JoinColumn(name = "film_id", referencedColumnName = "film_id")
+    @MapsId
     private Film film;
 
     private String title;
